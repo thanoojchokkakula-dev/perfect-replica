@@ -142,3 +142,40 @@
     color: var(--color-foreground);
   }
 }
+
+/* MobileTracker-style dashboard tokens */
+:root {
+  --font-sans: "Open Sans", system-ui, sans-serif;
+  --background: oklch(0.985 0.002 250);
+  --foreground: oklch(0.42 0.02 250);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.42 0.02 250);
+  --border: oklch(0.93 0.005 250);
+  --muted-foreground: oklch(0.62 0.015 250);
+  --primary: oklch(0.72 0.09 200);
+  --primary-foreground: oklch(1 0 0);
+  --radius: 0.25rem;
+
+  --topbar: oklch(0.32 0.024 245);
+  --topbar-foreground: oklch(0.97 0.003 250);
+  --sidebar: oklch(0.36 0.022 245);
+  --sidebar-foreground: oklch(0.93 0.005 250);
+  --sidebar-border: oklch(0.32 0.022 245);
+  --sidebar-accent: oklch(0.31 0.024 245);
+  --brand: oklch(0.74 0.1 199);
+  --info: oklch(0.66 0.13 258);
+  --info-foreground: oklch(1 0 0);
+  --success: oklch(0.73 0.16 158);
+  --success-foreground: oklch(1 0 0);
+}
+
+@theme inline {
+  --color-topbar: var(--topbar);
+  --color-topbar-foreground: var(--topbar-foreground);
+  --color-brand: var(--brand);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --font-sans: var(--font-sans);
+}
