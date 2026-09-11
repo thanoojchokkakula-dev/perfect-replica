@@ -1,151 +1,130 @@
-import { createFileRoute } from "@tanstack/react-router";
-import {
-  Home,
-  Mail,
-  Image as ImageIcon,
-  Phone,
-  Map,
-  Images,
-  Compass,
-  Calendar,
-  Contact,
-  Globe,
-  Clipboard,
-  ChevronLeft,
-  Menu,
-  User,
-  ShoppingBasket,
-  LogOut,
-  Smartphone,
-  Info,
-  Download,
-} from "lucide-react";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+import { Mail, Phone, Map, Contact, ShieldCheck, Smartphone } from "lucide-react";
+
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Add a phone to your account | Mobile Tracker" },
+      { title: "MobileTracker — follow a phone's messages, calls and locations" },
       {
         name: "description",
         content:
-          "Add a phone to your Mobile Tracker account: download and install the application on the phone you want to follow.",
+          "MobileTracker lets you add a phone to your account and follow its messages, calls, locations and contacts from one simple dashboard.",
       },
-      { property: "og:title", content: "Add a phone to your account | Mobile Tracker" },
+      { property: "og:title", content: "MobileTracker — follow a phone's messages, calls and locations" },
       {
         property: "og:description",
-        content:
-          "Add a phone to your Mobile Tracker account: download and install the application on the phone you want to follow.",
+        content: "Add a phone to your account and follow its messages, calls, locations and contacts.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  component: AddPhonePage,
+  component: LandingPage,
 });
 
-const navItems = [
-  { label: "Dashboard", icon: Home, arrow: false },
-  { label: "SMS", icon: Mail, arrow: true },
-  { label: "MMS", icon: ImageIcon, arrow: false },
-  { label: "Calls", icon: Phone, arrow: true },
-  { label: "Locations", icon: Map, arrow: true },
-  { label: "Pictures", icon: Images, arrow: false },
-  { label: "Apps", icon: Compass, arrow: false },
-  { label: "Calendar", icon: Calendar, arrow: false },
-  { label: "Contacts", icon: Contact, arrow: false },
-  { label: "Site Web", icon: Globe, arrow: true },
-  { label: "Clipboard", icon: Clipboard, arrow: false },
+const features = [
+  { icon: Mail, title: "Messages", text: "Read every text sent and received, with contact and time." },
+  { icon: Phone, title: "Calls", text: "Incoming, outgoing and missed calls with durations." },
+  { icon: Map, title: "Locations", text: "A timeline of where the phone has been, down to the street." },
+  { icon: Contact, title: "Contacts", text: "The full address book saved on the phone." },
 ];
 
-function AddPhonePage() {
+function LandingPage() {
+  const [signedIn, setSignedIn] = useState(false);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => setSignedIn(Boolean(data.session)));
+    const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSignedIn(Boolean(session));
+    });
+    return () => sub.subscription.unsubscribe();
+  }, []);
+
   return (
     <div className="min-h-screen bg-background font-sans text-foreground">
-      <div className="flex min-h-screen">
-        <aside className="w-[352px] shrink-0 bg-[var(--sidebar)] text-[var(--sidebar-foreground)]">
-          <div className="flex h-[95px] items-center gap-3 bg-[var(--topbar)] px-6">
-            <span className="flex size-7 items-center justify-center rounded-full bg-brand text-[15px] font-bold text-[var(--topbar)]">
-              M
-            </span>
-            <div className="leading-none">
-              <span className="text-[28px] font-semibold text-[var(--topbar-foreground)]">
-                Mobile
-              </span>
-              <span className="text-[28px] font-light text-[var(--topbar-foreground)]">
-                Tracker
-              </span>
-              <div className="-mt-1 text-right text-[15px] font-light italic text-[var(--topbar-foreground)]/80">
-                free
-              </div>
-            </div>
-            <Menu className="ml-2 size-7 text-[var(--topbar-foreground)]" strokeWidth={2} />
-          </div>
-
-          <nav>
-            {navItems.map(({ label, icon: Icon, arrow }) => (
-              <a
-                key={label}
-                href="#"
-                className="flex items-center gap-5 border-b border-[var(--sidebar-border)] px-7 py-[18px] text-[20px] font-light transition-colors hover:bg-[var(--sidebar-accent)]"
-              >
-                <Icon className="size-6 opacity-90" strokeWidth={1.5} />
-                <span className="flex-1">{label}</span>
-                {arrow && <ChevronLeft className="size-5 opacity-70" strokeWidth={2} />}
-              </a>
-            ))}
-          </nav>
-        </aside>
-
-        <div className="flex min-w-0 flex-1 flex-col">
-          <header className="flex h-[95px] items-center justify-end gap-8 bg-[var(--topbar)] px-8 text-[var(--topbar-foreground)]">
-            <User className="size-7" strokeWidth={1.5} />
-            <ShoppingBasket className="size-7" strokeWidth={1.5} />
-            <LogOut className="size-7" strokeWidth={1.5} />
-          </header>
-
-          <div className="flex items-center gap-3 bg-card px-8 py-6 text-[22px] font-light text-muted-foreground">
-            <span>Dashboard</span>
-            <span className="text-[10px]">●</span>
-            <span>Add phone</span>
-          </div>
-
-          <main className="px-8 py-6">
-            <section className="rounded-sm border border-border bg-card">
-              <div className="px-8 pb-6 pt-8">
-                <h1 className="flex items-center gap-3 text-[22px] font-semibold uppercase tracking-wide text-brand">
-                  <Smartphone className="size-6" strokeWidth={1.5} />
-                  Add a phone to your account
-                </h1>
-              </div>
-
-              <div className="border-t border-border px-8 py-9 text-center text-[22px] font-light">
-                Add a phone to your account, for that you just need to download and install the
-                application on the phone you want to follow.
-              </div>
-
-              <div className="border-t border-border px-8 py-9 text-center">
-                <p className="text-[22px] font-light leading-relaxed">
-                  <Info className="mr-1 inline size-5 -translate-y-0.5" strokeWidth={2} />
-                  Please read and follow all steps correctly before downloading and installing the
-                  application.
-                  <br />
-                  If this is not done, the application may not work properly.
-                </p>
-
-                <div className="mt-8 flex flex-col items-center gap-6">
-                  <button className="inline-flex items-center gap-3 rounded-sm bg-info px-7 py-4 text-[17px] font-semibold uppercase tracking-wide text-info-foreground transition-opacity hover:opacity-90">
-                    <Info className="size-5" strokeWidth={2} />
-                    Help for installation
-                  </button>
-                  <button className="inline-flex items-center gap-3 rounded-sm bg-success px-7 py-4 text-[17px] font-semibold uppercase tracking-wide text-success-foreground transition-opacity hover:opacity-90">
-                    <Download className="size-5" strokeWidth={2} />
-                    Download application
-                  </button>
-                </div>
-              </div>
-            </section>
-          </main>
+      <header className="flex items-center gap-3 bg-[var(--topbar)] px-6 py-5 text-[var(--topbar-foreground)]">
+        <span className="flex size-7 items-center justify-center rounded-full bg-brand text-[15px] font-bold text-[var(--topbar)]">
+          M
+        </span>
+        <div className="leading-none">
+          <span className="text-[22px] font-semibold">Mobile</span>
+          <span className="text-[22px] font-light">Tracker</span>
         </div>
-      </div>
+        <nav className="ml-auto">
+          {signedIn ? (
+            <Link
+              to="/dashboard"
+              className="rounded-sm bg-brand px-4 py-2 text-sm font-semibold uppercase tracking-wide text-[var(--topbar)]"
+            >
+              Go to dashboard
+            </Link>
+          ) : (
+            <Link
+              to="/auth"
+              className="rounded-sm bg-brand px-4 py-2 text-sm font-semibold uppercase tracking-wide text-[var(--topbar)]"
+            >
+              Sign in
+            </Link>
+          )}
+        </nav>
+      </header>
+
+      <main>
+        <section className="bg-[var(--sidebar)] px-6 py-20 text-center text-[var(--sidebar-foreground)]">
+          <h1 className="mx-auto max-w-3xl text-4xl font-light leading-tight md:text-5xl">
+            Follow a phone's activity from one simple dashboard
+          </h1>
+          <p className="mx-auto mt-5 max-w-2xl text-lg font-light opacity-90">
+            Create an account, add the phone you want to follow, and see its messages, calls, locations and
+            contacts in one place.
+          </p>
+          <div className="mt-9 flex flex-wrap justify-center gap-4">
+            <Link
+              to={signedIn ? "/dashboard" : "/auth"}
+              className="inline-flex items-center gap-3 rounded-sm bg-success px-7 py-4 text-sm font-semibold uppercase tracking-wide text-success-foreground"
+            >
+              <Smartphone className="size-5" />
+              {signedIn ? "Open my dashboard" : "Create a free account"}
+            </Link>
+            <Link
+              to="/auth"
+              className="inline-flex items-center gap-3 rounded-sm bg-info px-7 py-4 text-sm font-semibold uppercase tracking-wide text-info-foreground"
+            >
+              Sign in
+            </Link>
+          </div>
+        </section>
+
+        <section className="mx-auto max-w-6xl px-6 py-16">
+          <h2 className="text-center text-2xl font-light">Everything you can follow</h2>
+          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {features.map(({ icon: Icon, title, text }) => (
+              <div key={title} className="rounded-sm border border-border bg-card p-6">
+                <Icon className="size-7 text-brand" strokeWidth={1.5} />
+                <h3 className="mt-4 text-lg font-semibold">{title}</h3>
+                <p className="mt-2 text-sm font-light text-muted-foreground">{text}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="border-t border-border bg-card px-6 py-14">
+          <div className="mx-auto flex max-w-3xl items-start gap-4">
+            <ShieldCheck className="mt-1 size-7 shrink-0 text-brand" strokeWidth={1.5} />
+            <p className="text-sm font-light leading-relaxed text-muted-foreground">
+              Only you can see the phones on your account and their activity. Use this only on a phone you own or
+              have permission to follow — following someone without their consent may be illegal where you live.
+            </p>
+          </div>
+        </section>
+      </main>
+
+      <footer className="bg-[var(--topbar)] px-6 py-8 text-center text-sm font-light text-[var(--topbar-foreground)]">
+        MobileTracker — a demo tracking dashboard.
+      </footer>
     </div>
   );
 }
