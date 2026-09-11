@@ -14,7 +14,212 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      calls: {
+        Row: {
+          contact_name: string | null
+          contact_number: string
+          device_id: string
+          direction: string
+          duration_seconds: number
+          id: string
+          occurred_at: string
+        }
+        Insert: {
+          contact_name?: string | null
+          contact_number: string
+          device_id: string
+          direction?: string
+          duration_seconds?: number
+          id?: string
+          occurred_at?: string
+        }
+        Update: {
+          contact_name?: string | null
+          contact_number?: string
+          device_id?: string
+          direction?: string
+          duration_seconds?: number
+          id?: string
+          occurred_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "calls_device_id_fkey"
+            columns: ["device_id"]
+            isOneToOne: false
+            referencedRelation: "devices"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      contacts: {
+        Row: {
+          created_at: string
+          device_id: string
+          email: string | null
+          id: string
+          name: string
+          phone_number: string
+        }
+        Insert: {
+          created_at?: string
+          device_id: string
+          email?: string | null
+          id?: string
+          name: string
+          phone_number: string
+        }
+        Update: {
+          created_at?: string
+          device_id?: string
+          email?: string | null
+          id?: string
+          name?: string
+          phone_number?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contacts_device_id_fkey"
+            columns: ["device_id"]
+            isOneToOne: false
+            referencedRelation: "devices"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      devices: {
+        Row: {
+          battery: number
+          created_at: string
+          id: string
+          last_seen: string
+          model: string
+          name: string
+          os: string
+          phone_number: string | null
+          user_id: string
+        }
+        Insert: {
+          battery?: number
+          created_at?: string
+          id?: string
+          last_seen?: string
+          model?: string
+          name: string
+          os?: string
+          phone_number?: string | null
+          user_id: string
+        }
+        Update: {
+          battery?: number
+          created_at?: string
+          id?: string
+          last_seen?: string
+          model?: string
+          name?: string
+          os?: string
+          phone_number?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      locations: {
+        Row: {
+          accuracy_meters: number
+          address: string | null
+          device_id: string
+          id: string
+          latitude: number
+          longitude: number
+          occurred_at: string
+        }
+        Insert: {
+          accuracy_meters?: number
+          address?: string | null
+          device_id: string
+          id?: string
+          latitude: number
+          longitude: number
+          occurred_at?: string
+        }
+        Update: {
+          accuracy_meters?: number
+          address?: string | null
+          device_id?: string
+          id?: string
+          latitude?: number
+          longitude?: number
+          occurred_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "locations_device_id_fkey"
+            columns: ["device_id"]
+            isOneToOne: false
+            referencedRelation: "devices"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      messages: {
+        Row: {
+          body: string
+          contact_name: string | null
+          contact_number: string
+          device_id: string
+          direction: string
+          id: string
+          occurred_at: string
+        }
+        Insert: {
+          body: string
+          contact_name?: string | null
+          contact_number: string
+          device_id: string
+          direction?: string
+          id?: string
+          occurred_at?: string
+        }
+        Update: {
+          body?: string
+          contact_name?: string | null
+          contact_number?: string
+          device_id?: string
+          direction?: string
+          id?: string
+          occurred_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_device_id_fkey"
+            columns: ["device_id"]
+            isOneToOne: false
+            referencedRelation: "devices"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          email: string | null
+          full_name: string | null
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id: string
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
